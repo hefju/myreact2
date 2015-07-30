@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>react</title>
+        <script src="lib/react.js"></script>
+        <script src="lib/JSXTransformer.js"></script>
+        <style>
+            p{font:italic bold 50px verdana;}
+            #info{background-color: white;color: lightskyblue;}
+        </style>
+    </head>
+    
+    <body>
+        <div id="content"></div>
+        <div id="mountNode"></div>
+        <div id="example"></div>
+        <div style="opacity: 0;color:silver">直接html
+            <br/>
+            <input type="text"  onchange="alert(value);">
+            <div></div>
+        </div>
+        <script>
+            d=new Date();
+            t1=d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+            var el=React.createElement("p",null,t1);
+            React.render(el,document.querySelector("#example2"));
+        </script>
+
+<script type="text/jsx">
+    var Todolist=React.createClass({
+       render:function(){
+           var createitem=function(item){
+             return <li>{item}</li>;
+           };
+           return <ol>{this.props.items.map(createitem)}</ol>;
+       }
+    });
+    var TodoApp=React.createClass({
+        getInitialState:function(){
+            return {items:[],text:''};
+        },
+        onchange:function(e){
+            this.setState({text:e.target.value});
+        },
+        onsubmit:function(e){
+            e.preventDefault();
+            var list=this.state.items.concat(this.state.text);
+            var newtext='';
+            this.setState({items:list,text:newtext});
+        },
+        render:function(){
+            return (
+                <div><h3>Todo</h3>
+                    <Todolist items={this.state.items}/>
+                    <form onSubmit={this.onsubmit}>
+                       <input onChange={this.onchange} value={this.state.text}/>
+                        <button>add task</button>
+                    </form>
+
+                    </div>
+            );
+        }
+    });
+    React.render(<TodoApp/>,document.querySelector("#mountNode"));
+</script>
+    </body>
+
+</html>
